@@ -73,6 +73,15 @@ class TranslationField(Field):
         super(TranslationField, self).contribute_to_class(cls, name)
         
         #setattr(cls, 'get_%s_display' % self.name, curry(cls._get_FIELD_display, field=self))
+        
+        def south_field_triple(self):
+            "Returns a suitable description of this field for South."
+            # We'll just introspect the _actual_ field.
+            from south.modelsinspector import introspector
+            field_class = self.translated_field.__class__.__module__ + "." + self.translated_field.__class__.__name__
+            args, kwargs = introspector(self.translated_field)
+            # That's our definition!
+            return (field_class, args, kwargs)
     
 #class CurrentLanguageField(CharField):
     #def __init__(self, **kwargs):
